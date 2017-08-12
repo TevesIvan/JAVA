@@ -1,7 +1,13 @@
 package entidades;
 
 public class Categoria {
-	public String idCategoria,nombre;
+	public String nombre;
+	public int idCategoria;
+	
+	@Override
+	//public boolean equals(Object o){
+	//	return (o instanceof Categoria && ((Categoria)o).getIdCategoria().equalsIgnoreCase(this.getIdCategoria()));
+	//}
 	
 	public String toString()
 	{
@@ -9,11 +15,11 @@ public class Categoria {
 		return mensaje;
 	}
 
-	public String getIdCategoria() {
+	public int getIdCategoria() {
 		return idCategoria;
 	}
 
-	public void setIdCategoria(String idCategoria) {
+	public void setIdCategoria(int idCategoria) {
 		this.idCategoria = idCategoria;
 	}
 

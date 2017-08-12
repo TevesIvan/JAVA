@@ -22,7 +22,7 @@ public static Categoria[] getAll(){
 			if(rs!=null){
 				while(rs.next()){
 					Categoria c=new Categoria();
-					c.setIdCategoria(rs.getString("idCategoria"));
+					c.setIdCategoria(rs.getInt("idCategoria"));
 					c.setNombre(rs.getString("nombre"));
 					cate[i++]=c;
 				}

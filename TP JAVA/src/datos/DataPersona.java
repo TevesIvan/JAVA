@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import datos.FactoryConexion;
 import entidades.Persona;
+import entidades.Categoria;
 
 public class DataPersona {
 	public ArrayList<Persona> getAll(){
@@ -87,7 +88,7 @@ public class DataPersona {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select nombre, apellido, dni, habilitado, usuario, contraseña, id from persona where dni=?");
+					"select nombre, apellido, dni, habilitado, usuario, contraseña, id, idCategoria from persona where dni=?");
 			stmt.setString(1, per.getDni());
 			rs = stmt.executeQuery();
 			if(rs!=null && rs.next()){
@@ -99,6 +100,7 @@ public class DataPersona {
 				p.setUsuario(rs.getString("usuario"));
 				p.setContraseña(rs.getString("contraseña"));
 				p.setId(rs.getInt("id"));
+				p.setCategoria(this.getCategoria(rs.getString("idCategoria")));
 			}
 			
 		} catch (SQLException e) {
@@ -114,6 +116,36 @@ public class DataPersona {
 			e.printStackTrace();
 		}
 		return p;
+	}
+	
+	public Categoria getCategoria(String idCat){
+		Categoria c=null;
+		ResultSet rs=null;
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"select idCategoria, nombre from categoria where idCategoria=?");
+			stmt.setString(1, idCat);
+			rs = stmt.executeQuery();
+			if(rs!=null && rs.next()){
+				c=new Categoria();
+				c.setNombre(rs.getString("nombre"));
+				c.setIdCategoria(rs.getInt("idCategoria"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			if(rs!=null) rs.close();
+			if(stmt!=null) stmt.close();
+			FactoryConexion.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		return c;
 	}
 	
 	public void delete(Persona p)
