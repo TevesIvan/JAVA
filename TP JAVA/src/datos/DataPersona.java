@@ -1,17 +1,14 @@
 package datos;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
-
-import datos.FactoryConexion;
-import entidades.Persona;
-import entidades.Categoria;
+import java.security.KeyStore.ProtectionParameter;
+import entidades.*;
+import javax.swing.JOptionPane;
+import util.AppDataException;
 
 public class DataPersona {
-	public ArrayList<Persona> getAll(){
+	public ArrayList<Persona> getAll() throws Exception{
 		
 		Statement stmt=null;
 		ResultSet rs=null;
@@ -19,22 +16,28 @@ public class DataPersona {
 		try {
 			stmt = FactoryConexion.getInstancia()
 					.getConn().createStatement();
-			rs = stmt.executeQuery("select * from persona");
+			rs = stmt.executeQuery("select * from persona p inner join categoria c on p.idCategoria=c.idCategoria");
 			if(rs!=null){
 				while(rs.next()){
 					Persona p=new Persona();
+					p.setCategoria(new Categoria());
 					p.setNombre(rs.getString("nombre"));
 					p.setApellido(rs.getString("apellido"));
 					p.setDni(rs.getString("dni"));
 					p.setHabilitado(rs.getBoolean("habilitado"));
 					p.setUsuario(rs.getString("usuario"));
 					p.setContraseña(rs.getString("contraseña"));
-					p.setId(rs.getInt(p.getId()));
+					p.setId(rs.getInt("id"));
+					p.getCategoria().setIdCategoria(rs.getInt("idCategoria"));
+					p.getCategoria().setNombre(rs.getString("nombre"));
+					pers.add(p);
 				}
 			}
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			throw e;
+		} catch (AppDataException ade){
+			throw ade;
 		}
 		
 
@@ -51,27 +54,32 @@ public class DataPersona {
 		
 	}
 	
-	public void add(Persona p){
+	public void add(Persona p) throws Exception{
 		
 		PreparedStatement stmt =null;
-		
+		ResultSet keyResultSet=null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"insert into persona values (?,?,?,?,?,?)");
+					"insert into persona(dni,apellido,nombre,usuario,contraseña,habilitado,idCategoria) values (?,?,?,?,?,?,?)",
+					PreparedStatement.RETURN_GENERATED_KEYS
+					);
 			stmt.setString(3, p.getNombre());
 			stmt.setString(2, p.getApellido());
 			stmt.setString(1, p.getDni());
 			stmt.setBoolean(6, p.isHabilitado());
 			stmt.setString(4, p.getUsuario());
 			stmt.setString(5, p.getContraseña());
-			
+			stmt.setInt(7,p.getCategoria().getIdCategoria());
 			stmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			keyResultSet=stmt.getGeneratedKeys();
+			if(keyResultSet!=null && keyResultSet.next()){
+				p.setId(keyResultSet.getInt(1));
+			}
+		} catch (SQLException | AppDataException e) {
+			throw e;
 		}
 		try {
-		
+			if(keyResultSet!=null)keyResultSet.close();
 			if(stmt!=null) stmt.close();
 			FactoryConexion.getInstancia().releaseConn();
 		} catch (SQLException e) {
@@ -82,13 +90,13 @@ public class DataPersona {
 	}
 	
 	
-	public Persona getByDni(Persona per){
+	public Persona getByDni(Persona per) throws Exception{
 		Persona p=null;
 		ResultSet rs=null;
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select nombre, apellido, dni, habilitado, usuario, contraseña, id, idCategoria from persona where dni=?");
+					"select p.nombre, apellido, dni, habilitado, usuario, contraseña, id, c.idCategoria from persona p inner join categoria c on p.idCategoria=c.idCategoria where dni=?");
 			stmt.setString(1, per.getDni());
 			rs = stmt.executeQuery();
 			if(rs!=null && rs.next()){
@@ -100,55 +108,29 @@ public class DataPersona {
 				p.setUsuario(rs.getString("usuario"));
 				p.setContraseña(rs.getString("contraseña"));
 				p.setId(rs.getInt("id"));
-				p.setCategoria(this.getCategoria(rs.getString("idCategoria")));
+				p.setCategoria(new Categoria());
+				p.getCategoria().setIdCategoria(rs.getInt("idCategoria"));
+				p.getCategoria().setNombre(rs.getString("nombre"));
 			}
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
-		try {
-			if(rs!=null) rs.close();
-			if(stmt!=null) stmt.close();
-			FactoryConexion.getInstancia().releaseConn();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
+			throw e;
+		} finally{
+			try {
+				if(rs!=null)rs.close();
+				if(stmt!=null)stmt.close();
+				FactoryConexion.getInstancia().releaseConn();
+			} catch (SQLException e) {
+				throw e;
+			}
 		}
 		return p;
 	}
 	
-	public Categoria getCategoria(String idCat){
-		Categoria c=null;
-		ResultSet rs=null;
-		PreparedStatement stmt =null;
-		try {
-			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select idCategoria, nombre from categoria where idCategoria=?");
-			stmt.setString(1, idCat);
-			rs = stmt.executeQuery();
-			if(rs!=null && rs.next()){
-				c=new Categoria();
-				c.setNombre(rs.getString("nombre"));
-				c.setIdCategoria(rs.getInt("idCategoria"));
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			if(rs!=null) rs.close();
-			if(stmt!=null) stmt.close();
-			FactoryConexion.getInstancia().releaseConn();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-		return c;
-	}
 	
-	public void delete(Persona p)
+	
+	public void delete(Persona p) throws Exception
 	{
 		PreparedStatement stmt =null;
 		try {

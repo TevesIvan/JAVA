@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.CrtlABMCPersona;
-import datos.DataCategoria;
 import entidades.*;
 
 import javax.swing.GroupLayout;
@@ -24,6 +23,7 @@ import javax.swing.JFrame;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import java.awt.List;
 import javax.swing.JComboBox;
@@ -33,12 +33,16 @@ import java.awt.event.ContainerEvent;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
-public class ABMCPersonaDesktop extends JFrame {
+public class ABMCPersonaDesktop extends JInternalFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
 
 	private CrtlABMCPersona ctrl=new CrtlABMCPersona();
 	
@@ -53,8 +57,8 @@ public class ABMCPersonaDesktop extends JFrame {
 	private JTextField txtUsuario;
 	private JTextField txtContraseña;
 	private JTextField txtId;
-	//private JComboBox<Categoria> comboBoxCategorias;
-	private JTextField txtCategoria;
+	private JComboBox cboCategoria;
+	private JComboBox cboCategoria_1;
 
 	/**
 	 * Launch the application.
@@ -76,7 +80,7 @@ public class ABMCPersonaDesktop extends JFrame {
 	 * Create the frame.
 	 */
 	public ABMCPersonaDesktop() {
-	//	setClosable(true);
+		setClosable(true);
 		setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 340, 341);
 		contentPane = new JPanel();
@@ -155,8 +159,7 @@ public class ABMCPersonaDesktop extends JFrame {
 		
 		JLabel lblCategoria = new JLabel("Categoria");
 		
-		txtCategoria = new JTextField();
-		txtCategoria.setColumns(10);
+		cboCategoria_1 = new JComboBox();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -196,9 +199,9 @@ public class ABMCPersonaDesktop extends JFrame {
 									.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addGap(18)
 							.addComponent(lblCategoria)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(22, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(cboCategoria_1, 0, 92, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -214,7 +217,7 @@ public class ABMCPersonaDesktop extends JFrame {
 						.addComponent(lblNombre)
 						.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblCategoria)
-						.addComponent(txtCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cboCategoria_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblApellido)
@@ -231,30 +234,58 @@ public class ABMCPersonaDesktop extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtId, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblId))
-					.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnAgregar)
 						.addComponent(btnBorrar)
 						.addComponent(btnModificar)))
 		);
 		contentPane.setLayout(gl_contentPane);
+		cargarListas();
 	}
 
+	private void cargarListas(){
+		try {
+			this.cboCategoria_1.setModel(new DefaultComboBoxModel(ctrl.getCategorias().toArray()));
+			this.cboCategoria_1.setSelectedIndex(-1);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this,e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	protected void buscarClick() {
-		this.mapearAForm(ctrl.getByDni(this.mapearDeForm()));
-		
+		try {
+			this.mapearAForm(ctrl.getByDni(this.mapearDeForm()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this,e.getMessage());;
+		}	
 	}
 	
 	protected void agregarClick(){
-		ctrl.add(this.mapearDeForm());
+		Persona p=this.mapearDeForm();
+		try {
+			ctrl.add(p);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+		this.txtId.setText(String.valueOf(p.getId()));
 	}
 	
 	protected void borrarClick(){
-		ctrl.delete(this.mapearDeForm());
+		try {
+			ctrl.delete(this.mapearDeForm());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 	}
 	
 	protected void modificarClick(){
-		ctrl.update(this.mapearDeForm());
+		try {
+			ctrl.update(this.mapearDeForm());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 	}
 	
 	private void mapearAForm(Persona p){
@@ -265,7 +296,7 @@ public class ABMCPersonaDesktop extends JFrame {
 		this.txtUsuario.setText(p.getUsuario());
 		this.txtContraseña.setText(p.getContraseña());
 		this.txtId.setText(String.valueOf(p.getId()));
-		this.txtCategoria.setText(p.getCategoria().getNombre());
+		this.cboCategoria_1.setSelectedItem(p.getCategoria());
 	/*	switch(p.getCategoria().getNombre())
 		{
 		case "Usuario":
@@ -279,12 +310,19 @@ public class ABMCPersonaDesktop extends JFrame {
 
 	private Persona mapearDeForm(){
 		Persona p=new Persona();
+		if(!this.txtId.getText().isEmpty()){
+			p.setId(Integer.parseInt(this.txtId.getText()));
+		}
 		p.setDni(this.txtDni.getText());
 		p.setNombre(this.txtNombre.getText());
 		p.setApellido(this.txtApellido.getText());
 		p.setHabilitado(this.chkHabilitado.isSelected());
 		p.setUsuario(this.txtUsuario.getText());
 		p.setContraseña(this.txtContraseña.getText());
+		if(cboCategoria_1.getSelectedIndex()!=-1){
+			p.setCategoria((Categoria)this.cboCategoria.getSelectedItem());
+		}
+		//p.setCategoria(ctrl.getByNombre(this.txtCategoria.getText()));
 		//p.setCategoria(this.comboBoxCategorias.getSelectedItem());
 		return p;
 	}

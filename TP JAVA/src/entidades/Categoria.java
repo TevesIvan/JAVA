@@ -5,14 +5,14 @@ public class Categoria {
 	public int idCategoria;
 	
 	@Override
-	//public boolean equals(Object o){
-	//	return (o instanceof Categoria && ((Categoria)o).getIdCategoria().equalsIgnoreCase(this.getIdCategoria()));
-	//}
+	public boolean equals(Object o){
+		return (o instanceof Categoria && ((Categoria)o).getIdCategoria()==this.getIdCategoria());
+	}
 	
+	@Override
 	public String toString()
 	{
-		String mensaje=this.nombre;
-		return mensaje;
+		return this.getNombre();
 	}
 
 	public int getIdCategoria() {
@@ -29,5 +29,10 @@ public class Categoria {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	@Override
+	public int hashCode(){
+		return ((Integer)this.getIdCategoria()).hashCode();
 	}
 }

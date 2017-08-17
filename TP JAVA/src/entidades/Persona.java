@@ -62,16 +62,22 @@ public class Persona {
 	public void setHabilitado(boolean habilitado) {
 		this.habilitado = habilitado;
 	}
-	public Persona(String dni,String nombre,String apellido,int id,String usuario,String contraseña,boolean habilitado)
+	public Persona(String dni,String nombre,String apellido,String usuario,String contraseña,boolean habilitado)
 	{
 		this.dni=dni;
 		this.nombre=nombre;
 		this.apellido=apellido;
-		this.id=id;
 		this.habilitado=habilitado;
 		this.usuario=usuario;
 		this.contraseña=contraseña;
 	}
 	public Persona(){}
 
+	@Override
+	public boolean equals(Object p){
+		return (p instanceof Persona) &&
+			 (((Persona)p).getDni().equals(this.getDni()));
+					
+
+	}
 }
