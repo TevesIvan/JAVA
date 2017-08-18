@@ -1,6 +1,7 @@
 package entidades;
 
 public class TipoElemento {
+	
 	public String nombre;
 	public String getNombre() {
 		return nombre;
@@ -27,4 +28,6 @@ public class TipoElemento {
 		this.id=id;
 		this.cantMax=cantMax;
 	}
+	public TipoElemento()
+	{}
 }

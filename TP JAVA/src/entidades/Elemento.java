@@ -28,4 +28,5 @@ public class Elemento {
 		this.id=id;
 		this.nombre=nombre;
 	}
+	public Elemento(){}
 }

@@ -17,7 +17,7 @@ public class CrtlABMCPersona {
 	public CrtlABMCPersona(){
 		dataPer = new DataPersona();
 		dataCat=new DataCategoria();
-		pers= new ArrayList<Persona>();
+	//	pers= new ArrayList<Persona>();
 	}
 	
 	public void add(Persona p) throws Exception{

@@ -47,7 +47,7 @@ public class DataPersona {
 			FactoryConexion.getInstancia().releaseConn();
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			throw e;
 		}
 		
 		return pers;
