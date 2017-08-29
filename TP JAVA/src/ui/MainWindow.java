@@ -62,6 +62,37 @@ public class MainWindow {
 			}
 		});
 		mnuPersona.add(mnuABMCPersona);
+		
+		JMenu mnuTipoElemento = new JMenu("Tipo de Elemento");
+		menuBar.add(mnuTipoElemento);
+		
+		JMenuItem mnuABMCTipoElemento = new JMenuItem("ABMCTipoElemento");
+		mnuABMCTipoElemento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mnuABMCTipoElementoClick();
+			}
+		});
+		mnuTipoElemento.add(mnuABMCTipoElemento);
+		
+		JMenu mnuElemento = new JMenu("Elemento");
+		menuBar.add(mnuElemento);
+		
+		JMenuItem mnuABCMElemento = new JMenuItem("ABMCElemento");
+		mnuABCMElemento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mnuABMCElementoClick();
+			}
+		});
+		mnuElemento.add(mnuABCMElemento);
+		
+		JMenu mnuReserva = new JMenu("Reserva");
+		menuBar.add(mnuReserva);
+		
+		JMenuItem mnuReservarElemento = new JMenuItem("ReservarElemento");
+		mnuReserva.add(mnuReservarElemento);
+		
+		JMenuItem mnuConsultarReservas = new JMenuItem("ConsultarReservas");
+		mnuReserva.add(mnuConsultarReservas);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		desktopPane = new JDesktopPane();
@@ -73,4 +104,16 @@ public class MainWindow {
 		desktopPane.add(pd);
 		pd.setVisible(true);
 	}
+	
+	protected void mnuABMCTipoElementoClick() {
+		ABMCTipoElemento pd= new ABMCTipoElemento();
+		desktopPane.add(pd);
+		pd.setVisible(true);
 }
+	
+	protected void mnuABMCElementoClick() {
+		ABMCElementoDesktop pd= new ABMCElementoDesktop();
+		desktopPane.add(pd);
+		pd.setVisible(true);
+}
+	}

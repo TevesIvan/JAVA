@@ -22,7 +22,7 @@ public class Usuario extends Persona {
 		this.habilitado = habilitado;
 	}
     public Usuario(String usuario,String contraseña,boolean habilitado,String dni,String nombre,String apellido,int id)
-	{	super(dni,nombre,apellido,id); 
+	{	//super(dni,nombre,apellido,id); 
 		this.habilitado=habilitado;
 		this.usuario=usuario;
 		this.contraseña=contraseña;
