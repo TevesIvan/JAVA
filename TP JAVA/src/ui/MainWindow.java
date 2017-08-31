@@ -68,7 +68,7 @@ public class MainWindow {
 		
 		JMenuItem mnuABMCTipoElemento = new JMenuItem("ABMCTipoElemento");
 		mnuABMCTipoElemento.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
 				mnuABMCTipoElementoClick();
 			}
 		});
@@ -106,14 +106,14 @@ public class MainWindow {
 	}
 	
 	protected void mnuABMCTipoElementoClick() {
-		ABMCTipoElemento pd= new ABMCTipoElemento();
-		desktopPane.add(pd);
-		pd.setVisible(true);
+		ABMCTipoElemento te= new ABMCTipoElemento();
+		desktopPane.add(te);
+		te.setVisible(true);
 }
 	
 	protected void mnuABMCElementoClick() {
-		ABMCElementoDesktop pd= new ABMCElementoDesktop();
-		desktopPane.add(pd);
-		pd.setVisible(true);
+		ABMCElementoDesktop ed= new ABMCElementoDesktop();
+		desktopPane.add(ed);
+		ed.setVisible(true);
 }
 	}

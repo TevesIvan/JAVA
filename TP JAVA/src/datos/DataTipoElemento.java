@@ -54,12 +54,12 @@ public class DataTipoElemento {
 		ResultSet keyResultSet=null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"insert into tipo_elemento(idTipoElemento,nombre,cantMax) values (?,?,?)",
+					"insert into tipo_elemento(nombre,cantMax) values (?,?)",
 					PreparedStatement.RETURN_GENERATED_KEYS
 					);
-			stmt.setString(2, t.getNombre());
-			stmt.setInt(3, t.getCantMax());
-			stmt.setInt(1, t.getId());
+			stmt.setString(1, t.getNombre());
+			stmt.setInt(2, t.getCantMax());
+		//	stmt.setInt(1, t.getId());
 			stmt.executeUpdate();
 			keyResultSet=stmt.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()){
@@ -84,8 +84,8 @@ public class DataTipoElemento {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"delete from tipo_elemento where id=?");
-			stmt.setInt(1, t.getId());
+					"delete from tipo_elemento where nombre=?");
+			stmt.setString(1, t.getNombre());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
@@ -98,5 +98,36 @@ public class DataTipoElemento {
 			
 			throw e;
 		}
+	}
+	
+	public TipoElemento getByNombre(TipoElemento tip) throws Exception{
+		TipoElemento t=null;
+		ResultSet rs=null;
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"select nombre,cantMax,idTipoElemento from tipo_elemento where nombre=?");
+			stmt.setString(1, tip.getNombre());
+			rs = stmt.executeQuery();
+			if(rs!=null && rs.next()){
+				t=new TipoElemento();
+				t.setNombre(rs.getString("nombre"));
+				t.setCantMax(rs.getInt("cantMax"));
+				t.setId(rs.getInt("idTipoElemento"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally{
+			try {
+				if(rs!=null)rs.close();
+				if(stmt!=null)stmt.close();
+				FactoryConexion.getInstancia().releaseConn();
+			} catch (SQLException e) {
+				throw e;
+			}
+		}
+		return t;
 	}
 }

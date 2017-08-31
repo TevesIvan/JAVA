@@ -250,7 +250,6 @@ public class ABMCPersonaDesktop extends JInternalFrame {
 			this.cboCategoria_1.setSelectedIndex(-1);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this,e.getMessage());
-			e.printStackTrace();
 		}
 	}
 	
@@ -297,13 +296,6 @@ public class ABMCPersonaDesktop extends JInternalFrame {
 		this.txtContraseña.setText(p.getContraseña());
 		this.txtId.setText(String.valueOf(p.getId()));
 		this.cboCategoria_1.setSelectedItem(p.getCategoria());
-	/*	switch(p.getCategoria().getNombre())
-		{
-		case "Usuario":
-			this.txtCategoria.SetText("U");
-			break;
-		}*/
-	//	this.comboBoxCategorias.setSelectedItem(p.getCategoria());
 	}
 	
 
@@ -320,7 +312,7 @@ public class ABMCPersonaDesktop extends JInternalFrame {
 		p.setUsuario(this.txtUsuario.getText());
 		p.setContraseña(this.txtContraseña.getText());
 		if(cboCategoria_1.getSelectedIndex()!=-1){
-			p.setCategoria((Categoria)this.cboCategoria.getSelectedItem());
+			p.setCategoria((Categoria)this.cboCategoria_1.getSelectedItem());
 		}
 		//p.setCategoria(ctrl.getByNombre(this.txtCategoria.getText()));
 		//p.setCategoria(this.comboBoxCategorias.getSelectedItem());

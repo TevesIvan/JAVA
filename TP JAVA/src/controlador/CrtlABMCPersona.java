@@ -47,14 +47,6 @@ public class CrtlABMCPersona {
 		Persona p=new Persona();
 		p.setDni(dni);
 		return getByDni(p);
-		/*for (int i=0; i < this.pers.size(); i++){
-			if(pers.get(i).getDni().equals(dni)) {
-				return pers.get(i);
-				
-			}
-		}
-		return null; //ver error si falta
-		*/
 	}
 	
 	public ArrayList<Persona> getAll() throws Exception{
