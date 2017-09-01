@@ -30,4 +30,10 @@ public class TipoElemento {
 	}
 	public TipoElemento()
 	{}
+	
+	@Override
+	public String toString()
+	{
+		return this.getNombre();
+	}
 }

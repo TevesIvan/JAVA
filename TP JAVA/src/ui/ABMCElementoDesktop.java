@@ -3,17 +3,31 @@ package ui;
 import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import entidades.Categoria;
+import entidades.Elemento;
+import entidades.Persona;
+import entidades.TipoElemento;
+
 import javax.swing.JTextField;
+
+import controlador.CtrlABMCElemento;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ABMCElementoDesktop extends JInternalFrame {
 	private JTextField txtNombre;
 	private JTextField txtId;
 	private JComboBox cboTipoElemento;
+	private CtrlABMCElemento ctrl=new CtrlABMCElemento();
 
 	/**
 	 * Launch the application.
@@ -62,6 +76,12 @@ public class ABMCElementoDesktop extends JInternalFrame {
 		JButton btnModificar = new JButton("Modificar");
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				clickAgregar();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -112,6 +132,45 @@ public class ABMCElementoDesktop extends JInternalFrame {
 					.addContainerGap(66, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
+		cargarListas();
+	}
+	
+	private void cargarListas(){
+		try {
+			this.cboTipoElemento.setModel(new DefaultComboBoxModel(ctrl.getAllTipoElemento().toArray()));
+			this.cboTipoElemento.setSelectedIndex(-1);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this,e.getMessage());
+		}
+	}
+	
+	private void mapearAForm(Elemento el){
+		this.txtNombre.setText(el.getNombre());
+		this.txtId.setText(String.valueOf(el.getId()));
+		this.cboTipoElemento.setSelectedItem(el.getTipoElemento());
+	}
+	
 
+
+	private Elemento mapearDeForm(){
+		Elemento el=new Elemento();
+		if(!this.txtId.getText().isEmpty()){
+			el.setId(Integer.parseInt(this.txtId.getText()));
+		}
+		el.setNombre(this.txtNombre.getText());
+		if(cboTipoElemento.getSelectedIndex()!=-1){
+			el.setTipoElemento((TipoElemento)this.cboTipoElemento.getSelectedItem());
+		}
+		return el;
+	}
+	
+	protected void clickAgregar(){
+		Elemento el=this.mapearDeForm();
+		try {
+			ctrl.add(el);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+		this.txtId.setText(String.valueOf(el.getId()));
 	}
 }

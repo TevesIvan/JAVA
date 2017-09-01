@@ -61,12 +61,11 @@ public class DataElemento {
 		ResultSet keyResultSet=null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"insert into elemento(idElemento,nombre,idTipoElemento values (?,?,?)",
+					"insert into elemento(nombre,idTipoElemento) values (?,?)",
 					PreparedStatement.RETURN_GENERATED_KEYS
 					);
-			stmt.setInt(3, e.getTipoElemento().getId());
-			stmt.setString(2, e.getNombre());
-			stmt.setInt(1, e.getId());
+			stmt.setInt(2, e.getTipoElemento().getId());
+			stmt.setString(1, e.getNombre());
 			stmt.executeUpdate();
 			keyResultSet=stmt.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()){
