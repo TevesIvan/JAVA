@@ -70,10 +70,28 @@ public class ABMCElementoDesktop extends JInternalFrame {
 		JLabel lblTipoDeElemento = new JLabel("Tipo de Elemento");
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				buscarClick();
+			}
+		});
 		
 		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				borrarClick();
+			}
+		});
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				modificarClick();
+			}
+		});
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addMouseListener(new MouseAdapter() {
@@ -172,5 +190,28 @@ public class ABMCElementoDesktop extends JInternalFrame {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 		this.txtId.setText(String.valueOf(el.getId()));
+	}
+	
+	protected void buscarClick(){
+		try {
+			this.mapearAForm(ctrl.getByNomYTip(this.mapearDeForm()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this,e.getMessage());		}
+	}
+	
+	protected void borrarClick(){
+		try {
+			ctrl.delete(this.mapearDeForm());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+	}
+	
+	protected void modificarClick(){
+		try {
+			ctrl.update(this.mapearDeForm());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 	}
 }

@@ -86,14 +86,15 @@ public class DataElemento {
 	}
 	
 	
-	public Elemento getById(Elemento ele) throws Exception{
+	public Elemento getByNomYTip(Elemento ele) throws Exception{
 		Elemento e=null;
 		ResultSet rs=null;
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select e.nombre,e.idElemento,t.idTipoElemento,t.nombre, from elemento e inner join tipo_elemento t on t.idTipoElemento=e.idTipoElemento where e.idElemento=?");
-			stmt.setInt(1, ele.getId());
+					"select e.nombre,e.idElemento,t.idTipoElemento,t.nombre from elemento e inner join tipo_elemento t on t.idTipoElemento=e.idTipoElemento where e.nombre=? and t.idTipoElemento=?");
+			stmt.setString(1, ele.getNombre());
+			stmt.setInt(2,ele.getTipoElemento().getId());
 			rs = stmt.executeQuery();
 			if(rs!=null && rs.next()){
 				e=new Elemento();
@@ -125,8 +126,9 @@ public class DataElemento {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"delete from elemento where idElemento=?");
-			stmt.setInt(1, e.getId());
+					"delete from elemento where nombre=? and idTipoElemento=?");
+			stmt.setString(1, e.getNombre());
+			stmt.setInt(2,e.getTipoElemento().getId());
 			stmt.executeUpdate();
 		} catch (SQLException ex) {
 			throw ex;

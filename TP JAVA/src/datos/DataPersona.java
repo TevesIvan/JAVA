@@ -139,8 +139,7 @@ public class DataPersona {
 			stmt.setString(1, p.getDni());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}
 		try {
 			
@@ -148,7 +147,7 @@ public class DataPersona {
 			FactoryConexion.getInstancia().releaseConn();
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			throw e;
 		}
 	}
 }

@@ -40,4 +40,9 @@ public class CtrlABMCElemento {
 	{
 		return dataTip.getAll();
 	}
+	
+	public Elemento getByNomYTip(Elemento el) throws Exception
+	{
+		return dataEle.getByNomYTip(el);
+	}
 }

@@ -82,7 +82,7 @@ public class ABMCPersonaDesktop extends JInternalFrame {
 	public ABMCPersonaDesktop() {
 		setClosable(true);
 		setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 340, 341);
+		setBounds(100, 100, 471, 341);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -257,7 +257,7 @@ public class ABMCPersonaDesktop extends JInternalFrame {
 		try {
 			this.mapearAForm(ctrl.getByDni(this.mapearDeForm()));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this,e.getMessage());;
+			JOptionPane.showMessageDialog(this,e.getMessage());
 		}	
 	}
 	
