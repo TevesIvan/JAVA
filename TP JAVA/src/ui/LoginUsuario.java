@@ -116,7 +116,7 @@ public class LoginUsuario extends JFrame {
 			if(pe!=null)
 			{
 				this.setVisible(false);
-				MainWindow window = new MainWindow();
+				MainWindow window = new MainWindow(pe);
 				window.frame.setVisible(true);
 			}
 		} catch (Exception e) {

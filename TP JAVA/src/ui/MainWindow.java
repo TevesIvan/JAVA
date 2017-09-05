@@ -8,10 +8,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import entidades.Persona;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JDesktopPane;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow {
 
@@ -38,6 +43,10 @@ public class MainWindow {
 	 * Create the application.
 	 */
 	public MainWindow() {
+		initialize();
+	}
+	
+	public MainWindow(Persona usu){
 		initialize();
 	}
 
@@ -89,6 +98,12 @@ public class MainWindow {
 		menuBar.add(mnuReserva);
 		
 		JMenuItem mnuReservarElemento = new JMenuItem("ReservarElemento");
+		mnuReservarElemento.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mnuReservarElementoClick();
+			}
+		});
 		mnuReserva.add(mnuReservarElemento);
 		
 		JMenuItem mnuConsultarReservas = new JMenuItem("ConsultarReservas");
@@ -117,4 +132,10 @@ public class MainWindow {
 		desktopPane.add(ed);
 		ed.setVisible(true);
 }
+	
+	protected void mnuReservarElementoClick(){
+		ReservaElemento re=new ReservaElemento();
+		desktopPane.add(re);
+		re.setVisible(true);
+	}
 	}

@@ -314,8 +314,6 @@ public class ABMCPersonaDesktop extends JInternalFrame {
 		if(cboCategoria_1.getSelectedIndex()!=-1){
 			p.setCategoria((Categoria)this.cboCategoria_1.getSelectedItem());
 		}
-		//p.setCategoria(ctrl.getByNombre(this.txtCategoria.getText()));
-		//p.setCategoria(this.comboBoxCategorias.getSelectedItem());
 		return p;
 	}
 }
