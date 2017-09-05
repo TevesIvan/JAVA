@@ -15,7 +15,7 @@ import java.awt.BorderLayout;
 
 public class MainWindow {
 
-	private JFrame frame;
+	JFrame frame;
 	private JDesktopPane desktopPane;
 
 	/**
@@ -97,6 +97,7 @@ public class MainWindow {
 		
 		desktopPane = new JDesktopPane();
 		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
+		
 	}
 
 	protected void mnuABMCPersonaClick() {

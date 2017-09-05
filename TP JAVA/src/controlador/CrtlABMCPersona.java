@@ -58,4 +58,9 @@ public class CrtlABMCPersona {
 	{
 		return dataCat.getAll();
 	}
+	
+	public Persona getByUsYCon(Persona p) throws Exception
+	{
+		return dataPer.getByUsYCon(p);
+	}
 }
