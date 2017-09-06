@@ -97,6 +97,8 @@ public Reserva(Persona p,Elemento e,String detalle,Estado estado, Date fechaHora
 }
 
 public Reserva() {
+	this.estado=Estado.Reservado;
+	this.fechaHoraReserva.getTime();
 }
 	
 }

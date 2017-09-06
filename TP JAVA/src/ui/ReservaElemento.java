@@ -11,7 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import controlador.CtrlReserva;
 import entidades.Categoria;
+import entidades.Elemento;
 import entidades.Persona;
 import entidades.Reserva;
 import entidades.TipoElemento;
@@ -24,12 +26,14 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class ReservaElemento extends JInternalFrame {
 	private JTextField txtFechaDesde;
 	private JTextField txtFechaHasta;
 	private JComboBox cboTipoElemento;
+	private CtrlReserva ctrl=new CtrlReserva();
 
 	/**
 	 * Launch the application.
@@ -118,21 +122,26 @@ public class ReservaElemento extends JInternalFrame {
 					.addContainerGap(62, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
-//		cargarListas();
+		cargarListas();
 	}
 	
-/*	private void cargarListas(){
+	private void cargarListas(){
 		try {
 			this.cboTipoElemento.setModel(new DefaultComboBoxModel(ctrl.getTiposElementos().toArray()));
-			this.cboCategoria_1.setSelectedIndex(-1);
+			this.cboTipoElemento.setSelectedIndex(-1);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this,e.getMessage());
+			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
-	} */
+	} 
 	
 	protected void aceptarClick()
 	{
-		
+		ArrayList<Elemento> elementos= new ArrayList<Elemento>();
+		try {
+			elementos=ctrl.buscaElementosDisp(this.mapearDeForm());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 	}
 	
 	private Reserva mapearDeForm(){
