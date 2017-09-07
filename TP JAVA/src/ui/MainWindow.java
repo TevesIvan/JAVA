@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import entidades.Elemento;
 import entidades.Persona;
 
 import java.awt.event.ActionListener;
@@ -17,11 +18,13 @@ import javax.swing.JDesktopPane;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MainWindow {
 
 	JFrame frame;
 	private JDesktopPane desktopPane;
+	Persona usuario;
 
 	/**
 	 * Launch the application.
@@ -47,6 +50,7 @@ public class MainWindow {
 	}
 	
 	public MainWindow(Persona usu){
+		usuario=usu;
 		initialize();
 	}
 
@@ -109,7 +113,7 @@ public class MainWindow {
 		mnuReservarElemento.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mnuReservarElementoClick();
+				mnuReservarElementoClick(usuario);
 			}
 		});
 		mnuReserva.add(mnuReservarElemento);
@@ -141,7 +145,7 @@ public class MainWindow {
 		ed.setVisible(true);
 }
 	
-	protected void mnuReservarElementoClick(){
+	protected void mnuReservarElementoClick(Persona usu){
 		ReservaElemento re=new ReservaElemento();
 		desktopPane.add(re);
 		re.setVisible(true);
@@ -152,4 +156,5 @@ public class MainWindow {
 		desktopPane.add(lp);
 		lp.setVisible(true);
 	}
+	
 }

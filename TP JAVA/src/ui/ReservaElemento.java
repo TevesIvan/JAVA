@@ -34,6 +34,7 @@ public class ReservaElemento extends JInternalFrame {
 	private JTextField txtFechaHasta;
 	private JComboBox cboTipoElemento;
 	private CtrlReserva ctrl=new CtrlReserva();
+	private JTextField txtDetalle;
 
 	/**
 	 * Launch the application.
@@ -81,6 +82,11 @@ public class ReservaElemento extends JInternalFrame {
 				aceptarClick();
 			}
 		});
+		
+		JLabel lblDetalle = new JLabel("Detalle");
+		
+		txtDetalle = new JTextField();
+		txtDetalle.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -88,19 +94,25 @@ public class ReservaElemento extends JInternalFrame {
 					.addGap(67)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblFechaDesde)
-							.addGap(18)
-							.addComponent(txtFechaDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblFechaHasta)
-								.addComponent(lblTipoElemento))
-							.addPreferredGap(ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(cboTipoElemento, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(txtFechaHasta)
-								.addComponent(btnAceptar))))
-					.addContainerGap(201, Short.MAX_VALUE))
+							.addComponent(lblDetalle)
+							.addContainerGap())
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblFechaDesde)
+									.addGap(18)
+									.addComponent(txtFechaDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblFechaHasta)
+										.addComponent(lblTipoElemento))
+									.addPreferredGap(ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(cboTipoElemento, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(txtFechaHasta)
+										.addComponent(btnAceptar)
+										.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+							.addContainerGap(201, Short.MAX_VALUE))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -117,9 +129,13 @@ public class ReservaElemento extends JInternalFrame {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTipoElemento)
 						.addComponent(cboTipoElemento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(41)
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblDetalle)
+						.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
 					.addComponent(btnAceptar)
-					.addContainerGap(62, Short.MAX_VALUE))
+					.addGap(22))
 		);
 		getContentPane().setLayout(groupLayout);
 		cargarListas();
@@ -142,6 +158,9 @@ public class ReservaElemento extends JInternalFrame {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
+		this.setVisible(false);
+		ConfirmaReserva cr = new ConfirmaReserva(elementos);
+		cr.setVisible(true);
 	}
 	
 	private Reserva mapearDeForm(){
@@ -150,16 +169,17 @@ public class ReservaElemento extends JInternalFrame {
 		try {
 			r.setFechaHoraDesde((Date)format.parse(this.txtFechaDesde.getText()));
 		} catch (ParseException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage());
+			e.printStackTrace();
 		}
 		try {
 			r.setFechaHoraHasta((Date)format.parse(this.txtFechaHasta.getText()));
 		} catch (ParseException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage());
+			e.printStackTrace();
 		}
 		if(cboTipoElemento.getSelectedIndex()!=-1){
 			r.getElemento().setTipoElemento((TipoElemento)this.cboTipoElemento.getSelectedItem());
 		}
+		r.setDetalle(this.txtDetalle.getText());
 		return r;
 	}
 }
