@@ -22,12 +22,20 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
+import java.util.Date;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+import org.jdesktop.beansbinding.BeanProperty;
 
 public class ReservaElemento extends JInternalFrame {
 	private JTextField txtFechaDesde;
@@ -35,6 +43,9 @@ public class ReservaElemento extends JInternalFrame {
 	private JComboBox cboTipoElemento;
 	private CtrlReserva ctrl=new CtrlReserva();
 	private JTextField txtDetalle;
+	private JTable table;
+	private Persona usuario;
+	private ArrayList<Elemento> elementos;
 
 	/**
 	 * Launch the application.
@@ -51,15 +62,25 @@ public class ReservaElemento extends JInternalFrame {
 			}
 		});
 	}
+	
+	public ReservaElemento() {
+		initialize();
+	}
+	
+	public ReservaElemento(Persona usu){
+		this.usuario=usu;
+		initialize();
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public ReservaElemento() {
+	private void initialize() {
+		
 		setMaximizable(true);
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 757, 300);
 		
 		JLabel lblFechaDesde = new JLabel("Fecha Desde");
 		
@@ -87,60 +108,67 @@ public class ReservaElemento extends JInternalFrame {
 		
 		txtDetalle = new JTextField();
 		txtDetalle.setColumns(10);
+		
+		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(67)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblDetalle)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblFechaDesde)
-									.addGap(18)
-									.addComponent(txtFechaDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblFechaHasta)
-										.addComponent(lblTipoElemento))
-									.addPreferredGap(ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(cboTipoElemento, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(txtFechaHasta)
-										.addComponent(btnAceptar)
-										.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-							.addContainerGap(201, Short.MAX_VALUE))))
+						.addComponent(lblFechaDesde)
+						.addComponent(lblFechaHasta)
+						.addComponent(lblTipoElemento)
+						.addComponent(lblDetalle))
+					.addGap(28)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnAceptar)
+						.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(txtFechaHasta, Alignment.LEADING)
+							.addComponent(txtFechaDesde, Alignment.LEADING)
+							.addComponent(cboTipoElemento, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+					.addGap(18)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+					.addGap(23))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(48)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblFechaDesde)
-						.addComponent(txtFechaDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblFechaHasta)
-						.addComponent(txtFechaHasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblTipoElemento)
-						.addComponent(cboTipoElemento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblDetalle)
-						.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-					.addComponent(btnAceptar)
-					.addGap(22))
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(48)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblFechaDesde)
+								.addComponent(txtFechaDesde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblFechaHasta)
+								.addComponent(txtFechaHasta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTipoElemento)
+								.addComponent(cboTipoElemento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblDetalle)
+								.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+							.addComponent(btnAceptar)))
+					.addGap(27))
 		);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
 		getContentPane().setLayout(groupLayout);
 		cargarListas();
+		initDataBindings();
 	}
 	
+
 	private void cargarListas(){
 		try {
 			this.cboTipoElemento.setModel(new DefaultComboBoxModel(ctrl.getTiposElementos().toArray()));
@@ -152,34 +180,50 @@ public class ReservaElemento extends JInternalFrame {
 	
 	protected void aceptarClick()
 	{
-		ArrayList<Elemento> elementos= new ArrayList<Elemento>();
+		this.elementos= new ArrayList<Elemento>();
 		try {
 			elementos=ctrl.buscaElementosDisp(this.mapearDeForm());
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, e.getMessage());
+			e.printStackTrace();
 		}
-		this.setVisible(false);
-		ConfirmaReserva cr = new ConfirmaReserva(elementos);
-		cr.setVisible(true);
+		initDataBindings();
+		
+//		this.setVisible(false);
+//		ConfirmaReserva cr = new ConfirmaReserva(elementos);
+//		cr.setVisible(true);
 	}
 	
 	private Reserva mapearDeForm(){
 		Reserva r=new Reserva();
-		DateFormat format=new SimpleDateFormat("dd/mm/aa",Locale.getDefault());
+		r.setElemento(new Elemento());
+		DateFormat format=new SimpleDateFormat("dd/MM/yyyy",Locale.getDefault());
 		try {
-			r.setFechaHoraDesde((Date)format.parse(this.txtFechaDesde.getText()));
+			r.setFechaHoraDesde(format.parse(this.txtFechaDesde.getText()));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		try {
-			r.setFechaHoraHasta((Date)format.parse(this.txtFechaHasta.getText()));
+			r.setFechaHoraHasta(format.parse(this.txtFechaHasta.getText()));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		if(cboTipoElemento.getSelectedIndex()!=-1){
-			r.getElemento().setTipoElemento((TipoElemento)this.cboTipoElemento.getSelectedItem());
+			r.getElemento().setTipoElemento( (TipoElemento) this.cboTipoElemento.getSelectedItem());
 		}
 		r.setDetalle(this.txtDetalle.getText());
+		r.setPersona(this.usuario);
 		return r;
+	}
+	protected void initDataBindings() {
+		JTableBinding<Elemento, List<Elemento>, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, elementos, table);
+		//
+		BeanProperty<Elemento, String> elementoBeanProperty = BeanProperty.create("nombre");
+		jTableBinding.addColumnBinding(elementoBeanProperty).setColumnName("Nombre").setEditable(false);
+		//
+		BeanProperty<Elemento, TipoElemento> elementoBeanProperty_1 = BeanProperty.create("tipoElemento");
+		jTableBinding.addColumnBinding(elementoBeanProperty_1).setColumnName("Tipo Elemento").setEditable(false);
+		//
+		jTableBinding.setEditable(false);
+		jTableBinding.bind();
 	}
 }

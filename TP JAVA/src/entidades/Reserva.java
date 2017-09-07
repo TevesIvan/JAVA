@@ -1,5 +1,6 @@
 package entidades;
-import java.sql.Date;
+import java.util.Date;
+import java.util.Calendar;
 
 public class Reserva {
 	public java.util.Date getFechaActual() {
@@ -75,7 +76,9 @@ public class Reserva {
 	}
 
 	public java.util.Date fechaActual = new java.util.Date();
-	public Date fechaHoraReserva,fechaHoraDesde,fechaHoraHasta;
+	java.util.Date fechaHoraReserva;
+	Date fechaHoraDesde;
+	public Date fechaHoraHasta;
 	public int id;
 	public Persona persona;
 	public Elemento elemento;
@@ -86,7 +89,7 @@ public class Reserva {
 	}
 	public Estado estado;
 
-public Reserva(Persona p,Elemento e,String detalle,Estado estado, Date fechaHoraDesde, Date fechaHoraHasta){
+public Reserva(Persona p,Elemento e,String detalle,Estado estado, java.sql.Date fechaHoraDesde, Date fechaHoraHasta){
 	this.persona=p;
 	this.elemento=e;
 	this.detalle=detalle;
@@ -98,7 +101,7 @@ public Reserva(Persona p,Elemento e,String detalle,Estado estado, Date fechaHora
 
 public Reserva() {
 	this.estado=Estado.Reservado;
-	this.fechaHoraReserva.getTime();
+	this.fechaHoraReserva = Calendar.getInstance().getTime();
 }
 	
 }

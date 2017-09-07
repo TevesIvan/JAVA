@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.sql.PreparedStatement;
 
 
@@ -27,12 +28,12 @@ public class DataReserva {
 		ArrayList<Elemento> ele= new ArrayList<Elemento>();
 		try {
 			stmt = FactoryConexion.getInstancia().getConn().prepareStatement(
-					"select e.idElemento,e.nombre,t.idTipoElemento from elemento e inner join tipo_elemento t on e.idTipoElemento=t.idTipoElemento where t.nombre=? and e.idElemento not in(select e.idElemento from elemento e inner join reserva r on r.idElemento=e.idElemento where ((? between r.fechaHoraDesde and r.fechaHoraHasta) or (? between r.fechaHoraDesde and r.fechaHoraHasta)or(?<r.fechaHoraDesde and ?>r.fechaHoraHasta))and (r.estado=? or r.estado=?))");
+					"select e.idElemento,e.nombre,t.idTipoElemento,t.nombre,t.cantMax from elemento e inner join tipo_elemento t on e.idTipoElemento=t.idTipoElemento where t.nombre=? and e.idElemento not in(select e.idElemento from elemento e inner join reserva r on r.idElemento=e.idElemento where ((? between r.fechaHoraDesde and r.fechaHoraHasta) or (? between r.fechaHoraDesde and r.fechaHoraHasta)or(?<r.fechaHoraDesde and ?>r.fechaHoraHasta))and (r.estado=? or r.estado=?))");
 			stmt.setString(1,r.getElemento().getTipoElemento().getNombre());
-			stmt.setDate(2,r.getFechaHoraDesde());
-			stmt.setDate(3,r.getFechaHoraHasta());
-			stmt.setDate(4,r.getFechaHoraDesde());
-			stmt.setDate(5,r.getFechaHoraHasta());
+			stmt.setDate(2,new java.sql.Date(r.getFechaHoraDesde().getTime()));
+			stmt.setDate(3,new java.sql.Date(r.getFechaHoraHasta().getTime()));
+			stmt.setDate(4,new java.sql.Date(r.getFechaHoraDesde().getTime()));
+			stmt.setDate(5,new java.sql.Date(r.getFechaHoraHasta().getTime()));
 			stmt.setString(6,"Reservado");
 			stmt.setString(7,"Comenzado");
 			rs=stmt.executeQuery();
