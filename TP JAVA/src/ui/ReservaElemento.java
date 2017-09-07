@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import controlador.CtrlReserva;
 import entidades.Categoria;
@@ -184,6 +185,12 @@ public class ReservaElemento extends JInternalFrame {
 		);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				seleccionarClick();
+			}
+		});
 		scrollPane.setViewportView(table);
 		getContentPane().setLayout(groupLayout);
 		cargarListas();
@@ -216,11 +223,15 @@ public class ReservaElemento extends JInternalFrame {
 	}
 	
 	protected void confirmaReservaClick(){
-		ctrl.registrarReserva(reserva);
+		try {
+			ctrl.registrarReserva(reserva);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	protected void seleccionarClick(){
-		DefaultTableModel model=(DefaultTableModel) this.table.getModel();
+		TableModel model= this.table.getModel();
 		int selectedRowIndex=table.getSelectedRow();
 		reserva=this.mapearDeForm();
 		reserva.getElemento().setNombre(model.getValueAt(selectedRowIndex, 0).toString());

@@ -113,12 +113,17 @@ public class MainWindow {
 		mnuReservarElemento.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mnuReservarElementoClick(usuario);
+				mnuReservarElementoClick();
 			}
 		});
 		mnuReserva.add(mnuReservarElemento);
 		
 		JMenuItem mnuConsultarReservas = new JMenuItem("ConsultarReservas");
+		mnuConsultarReservas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mnuConsultarReservaClick();
+			}
+		});
 		mnuReserva.add(mnuConsultarReservas);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -145,8 +150,8 @@ public class MainWindow {
 		ed.setVisible(true);
 }
 	
-	protected void mnuReservarElementoClick(Persona usu){
-		ReservaElemento re=new ReservaElemento();
+	protected void mnuReservarElementoClick(){
+		ReservaElemento re=new ReservaElemento(this.usuario);
 		desktopPane.add(re);
 		re.setVisible(true);
 	}
@@ -155,6 +160,12 @@ public class MainWindow {
 		ListadoPersonas lp=new ListadoPersonas();
 		desktopPane.add(lp);
 		lp.setVisible(true);
+	}
+	
+	protected void mnuConsultarReservaClick(){
+		ListadoReservas lr=new ListadoReservas(this.usuario);
+		desktopPane.add(lr);
+		lr.setVisible(true);
 	}
 	
 }

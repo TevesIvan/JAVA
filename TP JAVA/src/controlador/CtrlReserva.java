@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import datos.DataReserva;
 import datos.DataTipoElemento;
 import entidades.Elemento;
+import entidades.Persona;
 import entidades.Reserva;
 import entidades.TipoElemento;
 
@@ -23,12 +24,17 @@ public class CtrlReserva {
 	}
 
 
-	public void registrarReserva(Reserva r) {
+	public void registrarReserva(Reserva r) throws Exception {
 		dataRes.registrarReserva(r);
 	}
 
 
 	public ArrayList<Elemento> buscaElementosDisp(Reserva r) throws Exception {
 		return dataRes.buscaElementosDisp(r);
+	}
+
+
+	public ArrayList<Reserva> getAllUsuario(Persona u) throws Exception {
+		return dataRes.getAll(u);
 	}
 }
