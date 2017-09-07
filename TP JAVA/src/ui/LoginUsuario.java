@@ -60,6 +60,7 @@ public class LoginUsuario extends JFrame {
 		txtUsuario.setColumns(10);
 		
 		txtContraseña = new JTextField();
+		txtContraseña.setToolTipText("");
 		txtContraseña.setColumns(10);
 		
 		JLabel lblUsuario = new JLabel("Usuario");

@@ -101,8 +101,9 @@ public class DataReserva {
 		ArrayList<Reserva> reservas= new ArrayList<Reserva>();
 		try {
 			stmt = FactoryConexion.getInstancia()
-					.getConn().prepareStatement("select * from reserva r inner join persona p on p.id=r.idPersona inner join elemento e on e.idElemento=r.idElemento inner join categoria c on c.idCategoria=p.idCategoria inner join tipo_elemento t on t.idTipoElemento=e.idTipoElemento where p.id=?");
+					.getConn().prepareStatement("select * from reserva r inner join persona p on p.id=r.idPersona inner join elemento e on e.idElemento=r.idElemento inner join categoria c on c.idCategoria=p.idCategoria inner join tipo_elemento t on t.idTipoElemento=e.idTipoElemento where p.id=? and r.estado=?");
 			stmt.setInt(1, usu.getId());
+			stmt.setString(2,"Reservado");
 			rs=stmt.executeQuery();
 			if(rs!=null){
 				while(rs.next()){
@@ -152,6 +153,27 @@ public class DataReserva {
 		}
 		
 		return reservas;
+	}
+
+	public void cancelarReserva(Reserva r) throws Exception {
+		PreparedStatement stmt =null;
+		try {
+			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
+					"update reserva set estado=? where id=?"
+					);
+			stmt.setString(1,"Cancelado");
+			stmt.setInt(2, r.getId());
+			stmt.executeUpdate();
+		} catch (SQLException | AppDataException e) {
+			throw e;
+		}
+		try {
+			if(stmt!=null) stmt.close();
+			FactoryConexion.getInstancia().releaseConn();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}		
 	}
 
 }

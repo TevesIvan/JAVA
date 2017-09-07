@@ -37,4 +37,8 @@ public class CtrlReserva {
 	public ArrayList<Reserva> getAllUsuario(Persona u) throws Exception {
 		return dataRes.getAll(u);
 	}
+	
+	public void cancelarReserva(Reserva r) throws Exception{
+		dataRes.cancelarReserva(r);
+	}
 }
