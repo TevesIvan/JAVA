@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableModel;
 
 import controlador.CtrlReserva;
 import entidades.Categoria;
@@ -46,6 +47,7 @@ public class ReservaElemento extends JInternalFrame {
 	private JTable table;
 	private Persona usuario;
 	private ArrayList<Elemento> elementos;
+	private Reserva reserva;
 
 	/**
 	 * Launch the application.
@@ -80,7 +82,7 @@ public class ReservaElemento extends JInternalFrame {
 		setMaximizable(true);
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(100, 100, 757, 300);
+		setBounds(100, 100, 757, 339);
 		
 		JLabel lblFechaDesde = new JLabel("Fecha Desde");
 		
@@ -110,6 +112,20 @@ public class ReservaElemento extends JInternalFrame {
 		txtDetalle.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				seleccionarClick();
+			}
+		});
+		
+		JButton btnElegirElemento = new JButton("Elegir Elemento");
+		btnElegirElemento.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				confirmaReservaClick();
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -122,24 +138,28 @@ public class ReservaElemento extends JInternalFrame {
 						.addComponent(lblDetalle))
 					.addGap(28)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnAceptar)
 						.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 							.addComponent(txtFechaHasta, Alignment.LEADING)
 							.addComponent(txtFechaDesde, Alignment.LEADING)
-							.addComponent(cboTipoElemento, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+							.addComponent(cboTipoElemento, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(btnAceptar))
 					.addGap(18)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
 					.addGap(23))
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(442, Short.MAX_VALUE)
+					.addComponent(btnElegirElemento)
+					.addGap(210))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addGap(48)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblFechaDesde)
@@ -156,9 +176,11 @@ public class ReservaElemento extends JInternalFrame {
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblDetalle)
 								.addComponent(txtDetalle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+							.addGap(28)
 							.addComponent(btnAceptar)))
-					.addGap(27))
+					.addGap(18)
+					.addComponent(btnElegirElemento)
+					.addGap(35))
 		);
 		
 		table = new JTable();
@@ -193,6 +215,18 @@ public class ReservaElemento extends JInternalFrame {
 //		cr.setVisible(true);
 	}
 	
+	protected void confirmaReservaClick(){
+		ctrl.registrarReserva(reserva);
+	}
+	
+	protected void seleccionarClick(){
+		DefaultTableModel model=(DefaultTableModel) this.table.getModel();
+		int selectedRowIndex=table.getSelectedRow();
+		reserva=this.mapearDeForm();
+		reserva.getElemento().setNombre(model.getValueAt(selectedRowIndex, 0).toString());
+		reserva.getElemento().setId(Integer.parseInt(model.getValueAt(selectedRowIndex, 1).toString()));
+	}
+	
 	private Reserva mapearDeForm(){
 		Reserva r=new Reserva();
 		r.setElemento(new Elemento());
@@ -220,8 +254,8 @@ public class ReservaElemento extends JInternalFrame {
 		BeanProperty<Elemento, String> elementoBeanProperty = BeanProperty.create("nombre");
 		jTableBinding.addColumnBinding(elementoBeanProperty).setColumnName("Nombre").setEditable(false);
 		//
-		BeanProperty<Elemento, TipoElemento> elementoBeanProperty_1 = BeanProperty.create("tipoElemento");
-		jTableBinding.addColumnBinding(elementoBeanProperty_1).setColumnName("Tipo Elemento").setEditable(false);
+		BeanProperty<Elemento, Integer> elementoBeanProperty_1 = BeanProperty.create("id");
+		jTableBinding.addColumnBinding(elementoBeanProperty_1).setColumnName("ID").setEditable(false);
 		//
 		jTableBinding.setEditable(false);
 		jTableBinding.bind();
