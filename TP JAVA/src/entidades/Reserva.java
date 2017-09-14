@@ -77,7 +77,7 @@ public class Reserva {
 
 	public java.util.Date fechaActual = new java.util.Date();
 	java.util.Date fechaHoraReserva;
-	Date fechaHoraDesde;
+	public Date fechaHoraDesde;
 	public Date fechaHoraHasta;
 	public int id;
 	public Persona persona;

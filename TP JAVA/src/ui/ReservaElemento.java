@@ -210,8 +210,13 @@ public class ReservaElemento extends JInternalFrame {
 	protected void aceptarClick()
 	{
 		this.elementos= new ArrayList<Elemento>();
-		try {
-			elementos=ctrl.buscaElementosDisp(this.mapearDeForm());
+		try {if (this.mapearDeForm().getElemento().getTipoElemento().isPrivilegio()==true)
+			{
+				if(this.usuario.getCategoria().getIdCategoria()==3)
+					elementos=ctrl.buscaElementosDisp(this.mapearDeForm());
+			}
+			else
+				elementos=ctrl.buscaElementosDisp(this.mapearDeForm());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

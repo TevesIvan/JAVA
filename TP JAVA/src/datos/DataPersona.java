@@ -157,7 +157,7 @@ public class DataPersona {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select p.nombre, apellido, dni, habilitado, usuario, contraseña, id, c.idCategoria from persona p inner join categoria c on p.idCategoria=c.idCategoria where usuario=? and contraseña=?");
+					"select p.nombre, apellido, dni, habilitado, usuario, contraseña, id, c.idCategoria from persona p inner join categoria c on p.idCategoria=c.idCategoria where usuario=? and contraseña=? and habilitado=1");
 			stmt.setString(1, per.getUsuario());
 			stmt.setString(2, per.getContraseña());
 			rs = stmt.executeQuery();

@@ -25,6 +25,7 @@ public class DataTipoElemento {
 					t.setId(rs.getInt("idTipoElemento"));
 					t.setNombre(rs.getString("nombre"));
 					t.setCantMax(rs.getInt("cantMax"));
+					t.setPrivilegio(rs.getBoolean("privilegio"));
 					tip.add(t);
 				}
 			}
@@ -54,12 +55,12 @@ public class DataTipoElemento {
 		ResultSet keyResultSet=null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"insert into tipo_elemento(nombre,cantMax) values (?,?)",
+					"insert into tipo_elemento(nombre,cantMax,privilegio) values (?,?,?)",
 					PreparedStatement.RETURN_GENERATED_KEYS
 					);
 			stmt.setString(1, t.getNombre());
 			stmt.setInt(2, t.getCantMax());
-		//	stmt.setInt(1, t.getId());
+			stmt.setBoolean(3, t.isPrivilegio());
 			stmt.executeUpdate();
 			keyResultSet=stmt.getGeneratedKeys();
 			if(keyResultSet!=null && keyResultSet.next()){
@@ -106,7 +107,7 @@ public class DataTipoElemento {
 		PreparedStatement stmt =null;
 		try {
 			stmt= FactoryConexion.getInstancia().getConn().prepareStatement(		
-					"select nombre,cantMax,idTipoElemento from tipo_elemento where nombre=?");
+					"select nombre,cantMax,idTipoElemento,privilegio from tipo_elemento where nombre=?");
 			stmt.setString(1, tip.getNombre());
 			rs = stmt.executeQuery();
 			if(rs!=null && rs.next()){
@@ -114,6 +115,7 @@ public class DataTipoElemento {
 				t.setNombre(rs.getString("nombre"));
 				t.setCantMax(rs.getInt("cantMax"));
 				t.setId(rs.getInt("idTipoElemento"));
+				t.setPrivilegio(rs.getBoolean("privilegio"));
 			}
 			
 		} catch (Exception e) {

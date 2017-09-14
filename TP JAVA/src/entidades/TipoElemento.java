@@ -1,7 +1,13 @@
 package entidades;
 
 public class TipoElemento {
-	
+	public boolean privilegio;
+	public boolean isPrivilegio() {
+		return privilegio;
+	}
+	public void setPrivilegio(boolean privilegio) {
+		this.privilegio = privilegio;
+	}
 	public String nombre;
 	public String getNombre() {
 		return nombre;

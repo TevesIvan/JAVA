@@ -25,12 +25,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JCheckBox;
 
 public class ABMCTipoElemento extends JInternalFrame {
 	private CtrlTipoElemento ctrl=new CtrlTipoElemento();
 	private JTextField txtId;
 	private JTextField txtNombre;
 	private JTextField txtCantMax;
+	private JCheckBox chkPrivilegio;
 
 	/**
 	 * Launch the application.
@@ -109,6 +111,8 @@ public class ABMCTipoElemento extends JInternalFrame {
 				clickModificar();
 			}
 		});
+		
+		chkPrivilegio = new JCheckBox("Privilegio");
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -123,14 +127,15 @@ public class ABMCTipoElemento extends JInternalFrame {
 									.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 									.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(lblId)
-										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(txtId, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGroup(groupLayout.createSequentialGroup()
 										.addComponent(lblCantidadMaxima)
 										.addPreferredGap(ComponentPlacement.UNRELATED)
 										.addComponent(txtCantMax, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addComponent(btnAgregar, Alignment.TRAILING))))
+									.addComponent(btnAgregar, Alignment.TRAILING)
+									.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+										.addComponent(lblId)
+										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(txtId, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addComponent(chkPrivilegio))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(46)
 							.addComponent(btnBorrar)))
@@ -153,15 +158,17 @@ public class ABMCTipoElemento extends JInternalFrame {
 						.addComponent(lblCantidadMaxima)
 						.addComponent(txtCantMax, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
+					.addComponent(chkPrivilegio)
+					.addGap(9)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblId)
-						.addComponent(txtId, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(53)
+						.addComponent(txtId, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblId))
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnBorrar)
 						.addComponent(btnAgregar)
 						.addComponent(btnModificar))
-					.addContainerGap(70, Short.MAX_VALUE))
+					.addContainerGap(71, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
 
@@ -170,6 +177,7 @@ public class ABMCTipoElemento extends JInternalFrame {
 		this.txtNombre.setText(t.getNombre());
 		this.txtCantMax.setText(String.valueOf(t.getCantMax()));
 		this.txtId.setText(String.valueOf(t.getId()));
+		this.chkPrivilegio.setSelected(t.isPrivilegio());
 	}
 	
 	private TipoElemento mapearDeForm(){
@@ -180,6 +188,7 @@ public class ABMCTipoElemento extends JInternalFrame {
 		t.setNombre(this.txtNombre.getText());
 		if(!this.txtCantMax.getText().isEmpty()){
 		t.setCantMax(Integer.parseInt(this.txtCantMax.getText()));}
+		t.setPrivilegio(this.chkPrivilegio.isSelected());
 		return t;
 	}
 	
