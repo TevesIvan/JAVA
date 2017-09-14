@@ -25,13 +25,11 @@ public class DataReserva {
 					"insert into reserva(idPersona,idElemento,detalle,estado,fechaHoraReserva,fechaHoraDesde,fechaHoraHasta) values (?,?,?,?,?,?,?)",
 					PreparedStatement.RETURN_GENERATED_KEYS
 					);
-			
-
+			stmt.setTimestamp(5, new java.sql.Timestamp(r.getFechaHoraReserva().getTime()));
 			stmt.setString(3, r.getDetalle());
 			stmt.setString(4, r.getEstado().toString());
-			stmt.setDate(5,new java.sql.Date(r.getFechaHoraReserva().getTime()));
-			stmt.setDate(6, new java.sql.Date(r.getFechaHoraDesde().getTime()));
-			stmt.setDate(7,new java.sql.Date(r.getFechaHoraHasta().getTime()));
+			stmt.setTimestamp(6, new java.sql.Timestamp(r.getFechaHoraDesde().getTime()));
+			stmt.setTimestamp(7,new java.sql.Timestamp(r.getFechaHoraHasta().getTime()));
 			stmt.setInt(1, r.getPersona().getId());
 			stmt.setInt(2, r.getElemento().getId());
 			stmt.executeUpdate();

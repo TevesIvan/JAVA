@@ -3,14 +3,6 @@ import java.util.Date;
 import java.util.Calendar;
 
 public class Reserva {
-	public java.util.Date getFechaActual() {
-		return fechaActual;
-	}
-
-	public void setFechaActual(java.util.Date fechaActual) {
-		this.fechaActual = fechaActual;
-	}
-
 	public Date getFechaHoraReserva() {
 		return fechaHoraReserva;
 	}
@@ -75,8 +67,7 @@ public class Reserva {
 		this.estado = estado;
 	}
 
-	public java.util.Date fechaActual = new java.util.Date();
-	java.util.Date fechaHoraReserva;
+	public java.util.Date fechaHoraReserva;
 	public Date fechaHoraDesde;
 	public Date fechaHoraHasta;
 	public int id;

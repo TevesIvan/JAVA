@@ -246,7 +246,7 @@ public class ReservaElemento extends JInternalFrame {
 	private Reserva mapearDeForm(){
 		Reserva r=new Reserva();
 		r.setElemento(new Elemento());
-		DateFormat format=new SimpleDateFormat("dd/MM/yyyy",Locale.getDefault());
+		DateFormat format=new SimpleDateFormat("dd/MM/yyyy HH:mm",Locale.getDefault());
 		try {
 			r.setFechaHoraDesde(format.parse(this.txtFechaDesde.getText()));
 		} catch (ParseException e) {
